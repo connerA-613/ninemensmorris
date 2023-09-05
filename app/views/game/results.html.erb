@@ -1,0 +1,39 @@
+<div class="results">
+  <div class="Game-Complete">
+    Game Complete
+  </div>
+
+  <div class="WL-Modal">
+    <div class="WL">
+      You Lose
+    </div>
+
+    <div class="Lose-Win-Conatiner">
+
+      <div class="Lose-WIN">
+        <div class="Lose-Color"></div>
+        <div class="Lose-status">
+          No moves remaining
+        </div>
+      </div>
+
+      <div class="Lose-WIN">
+        <div class="Win-Color"></div>
+        <div class="Win-status">
+          4 pieces remaining
+        </div>
+      </div>
+
+    </div>
+
+    <div class="W-L-Message">
+      Better Luck Next Time!
+    </div>
+  </div>
+
+  <div class="btn">
+    <button class="Replay-Game-button" type="button" name="button">Replay Game</button>
+    <%= button_to "Exit Game", destory_game_path, method: "delete", params: {:game_id => @id}, class: "start-button" %>
+  </div>
+
+</div>

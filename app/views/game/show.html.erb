@@ -1,0 +1,125 @@
+<% if @in_lobby %>
+    <div class="outer">
+        <div class="main-container">
+            <div class="title-container">
+                <h1>Nine Mens Morris</h1>
+                <span class="subtitle">Lobby</span>
+            </div>
+
+            <div class="lobby-container">
+                <span class="subtitle">Players in Lobby</span>
+                <div class="inline-element players-list">
+                    <% @players.each do |player| %>
+                        <div class="player-card">
+                            <div class="player-card-contents">
+                                <span class="dot <%= player.colour.to_s %>"></span>
+                                <%= player.get_name %>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="lobby-container">
+                <span class="subtitle">Invite Players</span>
+                <span class="inline-element room-code">Room Code: <%= @id %> </span>
+            </div>
+
+            <%= button_to "Start Game", board_path, params: {:game_id => @id}, class: "start-button" %>
+        </div>
+    </div>
+<% elsif @num_pieces_in_black_bag > 0 %>
+    <div class="outer">
+        <h1>Phase 1 - Placing Pieces</h1>
+        <span class="subtitle">Click on a desired location to place a piece!</span>
+        <div class="game-container">
+            <div class="piece-info-container white-player-text">
+                <span><%= @num_pieces_in_white_bag %> pieces left</span>
+                <span><%= @white_placed %> placed</span>
+                <div class="player-card-contents current-player <%=@current_player.colour.to_s%>-player-text">
+                    <span class="dot <%= @current_player.colour.to_s %>"></span>
+                    <span><%= @current_player.get_name %>'s turn</span>
+                </div>
+            </div>
+            <div class="board-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Nine_Men%27s_Morris_board.svg" alt="Board" class="board-image">
+                <% for i in 1..24 do %>
+                    <%=
+                        link_to i.to_s,
+                        board_place_path(:id => @board.id, :piece_id => i),
+                        method: "post",
+                        class: "piece-button " + @intersection_points[i-1].get_colour.to_s,
+                        style: @positions[i-1]
+                    %>
+                <% end %>
+            </div>
+            <div class="piece-info-container black-player-text">
+                <span><%= @num_pieces_in_black_bag %> pieces left</span>
+                <span><%= @black_placed %> placed</span>
+            </div>
+        </div>
+    </div>
+<% elsif @num_pieces_in_black_bag == 0 && @board.source_location == nil %>
+<div class="outer">
+<h1>Phase 2 - Moving Pieces</h1>
+<span class="subtitle">Click on a desired piece to move!</span>
+<div class="game-container">
+    <div class="piece-info-container white-player-text">
+        <span><%= @num_pieces_in_white_bag %> pieces left</span>
+        <span><%= @white_placed %> placed</span>
+        <div class="player-card-contents current-player <%=@current_player.colour.to_s%>-player-text">
+            <span class="dot <%= @current_player.colour.to_s %>"></span>
+            <span><%= @current_player.get_name %>'s turn</span>
+        </div>
+    </div>
+    <div class="board-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Nine_Men%27s_Morris_board.svg" alt="Board" class="board-image">
+        <% for i in 1..24 do %>
+            <%=
+                link_to i.to_s,
+                board_select_path(:id => @board.id, :piece_id => i, :game_id => @id),
+                method: "post",
+                class: "piece-button " + @intersection_points[i-1].get_colour.to_s,
+                style: @positions[i-1]
+            %>
+        <% end %>
+    </div>
+    <div class="piece-info-container black-player-text">
+        <span><%= @num_pieces_in_black_bag %> pieces left</span>
+        <span><%= @black_placed %> placed</span>
+    </div>
+</div>
+</div>
+
+<% elsif @num_pieces_in_black_bag == 0 && @board.source_location != nil %>
+<div class="outer">
+<h1>Phase 2 - Moving Pieces</h1>
+<span class="subtitle">Click on a desired location to move to!</span>
+<div class="game-container">
+    <div class="piece-info-container white-player-text">
+        <span><%= @num_pieces_in_white_bag %> pieces left</span>
+        <span><%= @white_placed %> placed</span>
+        <div class="player-card-contents current-player <%=@current_player.colour.to_s%>-player-text">
+            <span class="dot <%= @current_player.colour.to_s %>"></span>
+            <span><%= @current_player.get_name %>'s turn</span>
+        </div>
+    </div>
+    <div class="board-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Nine_Men%27s_Morris_board.svg" alt="Board" class="board-image">
+        <% for i in 1..24 do %>
+            <%=
+                link_to i.to_s,
+                board_move_path(:id => @board.id, :piece_id => i, :game_id => @id),
+                method: "post",
+                class: "piece-button " + @intersection_points[i-1].get_colour.to_s,
+                style: @positions[i-1]
+            %>
+        <% end %>
+    </div>
+    <div class="piece-info-container black-player-text">
+        <span><%= @num_pieces_in_black_bag %> pieces left</span>
+        <span><%= @black_placed %> placed</span>
+    </div>
+</div>
+</div>
+<% end %>

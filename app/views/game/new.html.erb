@@ -1,0 +1,29 @@
+<div class="outer">
+    <div class="main-container">
+        <div class="title-container">
+            <h1>Nine Mens Morris</h1>
+            <span class="subtitle">Welcome!</span>
+        </div>
+        <div class="start-game-container">
+            <% flash.each do |type, msg| %>
+                <div class="alert">
+                    <%= msg %>
+                </div>
+            <% end %>
+
+            <h2>Room Code</h2>
+            <%= form_with url: "/game", method: :get, class: "join-form" do |form| %>
+                <%= form.number_field :id, class: "room-code-input" %>
+                <%= submit_tag "Join Game", class: "start-button" %>
+            <% end %>
+            <h3>or</h3>
+            <%= button_to "Create Game", game_path, class: "start-button" %>
+        </div>
+
+        <span class="disclaimer">
+            <em>
+                This project was designed and implemented by students at the University of Guelph
+            </em>
+        </span>
+    </div>
+</div>
